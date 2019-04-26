@@ -8,6 +8,8 @@ require "cielo/api30/credit_card"
 require "cielo/api30/debit_card"
 require "cielo/api30/customer"
 require "cielo/api30/payment"
+require "cielo/api30/browser"
+require "cielo/api30/fraud_analysis"
 require "cielo/api30/recurrent_payment"
 require "cielo/api30/sale"
 
