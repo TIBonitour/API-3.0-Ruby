@@ -15,6 +15,7 @@ module Cielo
                     :number,
                     :complement,
                     :zip_code,
+                    :district,
                     :city,
                     :state,
                     :country
@@ -35,6 +36,7 @@ module Cielo
         address.zip_code = data["ZipCode"]
         address.city = data["City"]
         address.state = data["State"]
+        address.district = data["District"]
         address.country = data["Country"]
         address
       end
@@ -45,6 +47,7 @@ module Cielo
           Number: @number,
           Complement: @complement,
           ZipCode: @zip_code,
+          District: @district,
           City: @city,
           State: @state,
           Country: @country

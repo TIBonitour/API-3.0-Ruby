@@ -4,7 +4,8 @@ module Cielo
     class Sale
       attr_accessor :merchant_order_id,
                     :customer,
-                    :payment
+                    :payment,
+                    :fraud_analysis
 
       def initialize(merchant_order_id)
         @merchant_order_id = merchant_order_id
@@ -22,6 +23,7 @@ module Cielo
         sale = new(data["MerchantOrderId"])
         sale.customer = Customer.from_json(data["Customer"])
         sale.payment = Payment.from_json(data["Payment"])
+        sale.fraud_analysis = FraudAnalysis.from_json(data["FraudAnalysis"])
         sale
       end
 
@@ -29,7 +31,8 @@ module Cielo
         {
           MerchantOrderId: @merchant_order_id,
           Customer: @customer,
-          Payment: @payment
+          Payment: @payment,
+          FraudAnalysis: @fraud_analysis
         }
       end
     end
