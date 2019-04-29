@@ -28,7 +28,7 @@ module Cielo
 
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         recurrent_payment = new(data["AuthorizeNow"])
         recurrent_payment.start_date =data["StartDate"]
         recurrent_payment.end_date =data["EndDate"]
