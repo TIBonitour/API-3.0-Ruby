@@ -33,7 +33,7 @@ module Cielo
 
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         credit_card = new
         credit_card.card_number = data["CardNumber"]
         credit_card.holder = data["Holder"]
