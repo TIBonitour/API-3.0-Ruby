@@ -17,6 +17,10 @@ module Cielo
         hash.to_json(*options)
       end
 
+      def to_parsed_json
+        JSON.generate(as_json.reject! {|k,v| v.nil?})
+      end
+
       def self.from_json(data)
         return if data.nil?
         data = JSON.parse(data)
