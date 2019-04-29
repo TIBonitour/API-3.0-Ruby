@@ -19,7 +19,7 @@ module Cielo
 
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         fraud_analysis = new
         fraud_analysis.provider = data["Provider"]
         fraud_analysis.sequence = data["Sequence"]
