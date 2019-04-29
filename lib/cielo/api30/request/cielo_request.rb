@@ -39,8 +39,7 @@ module Cielo
           data = JSON.parse(response.body)
 
           raise CieloError.new(data.first["Code"], data.first["Message"]) if response.code.to_i >= 400
-
-          data
+          response.body
         end
       end
     end
