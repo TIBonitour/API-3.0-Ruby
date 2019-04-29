@@ -31,14 +31,14 @@ module Cielo
 
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         customer = new(data["Name"])
         customer.email = data["Email"]
         customer.birth_date = data["BirthDate"]
         customer.identity = data["Identity"]
         customer.identity_type = data["IdentityType"]
-        customer.address = Address.from_json(data["Address"])
-        customer.delivery_address = Address.from_json(data["DeliveryAddress"])
+        customer.address = Address.from_json(JSON.generate(data["Address"])) unless data["Address"].nil?
+        customer.delivery_address = Address.from_json(JSON.generate(data["DeliveryAddress"])) unless data["DeliveryAddress"].nil?
         customer
       end
 

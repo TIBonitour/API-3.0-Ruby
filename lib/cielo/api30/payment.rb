@@ -64,7 +64,7 @@ module Cielo
 
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         payment = new(data["Amount"])
 
         payment.service_tax_amount = data["ServiceTaxAmount"]
@@ -73,9 +73,9 @@ module Cielo
         payment.capture = data["Capture"]
         payment.authenticate = data["Authenticate"]
         payment.recurrent = data["Recurrent"]
-        payment.recurrent_payment = RecurrentPayment.from_json(data["RecurrentPayment"])
-        payment.credit_card = CreditCard.from_json(data["CreditCard"])
-        payment.debit_card = DebitCard.from_json(data["DebitCard"])
+        payment.recurrent_payment = RecurrentPayment.from_json(JSON.generate(data["RecurrentPayment"])) unless data["RecurrentPayment"].nil?
+        payment.credit_card = CreditCard.from_json(JSON.generate(data["CreditCard"])) unless data["CreditCard"].nil?
+        payment.debit_card = DebitCard.from_json(JSON.generate(data["DebitCard"])) unless data["DebitCard"].nil?
         payment.proof_of_sale = data["ProofOfSale"]
         payment.authorization_code = data["AuthorizationCode"]
         payment.soft_descriptor = data["SoftDescriptor"]
@@ -103,7 +103,7 @@ module Cielo
         payment.bar_code_number = data["BarCodeNumber"]
         payment.digitable_line = data["DigitableLine"]
         payment.address = data["Address"]
-        payment.return_info = ReturnInfo.new(payment.return_code)
+        payment.return_info = ReturnInfo.from_json(JSON.generate(data["ReturnInfo"])) unless data["ReturnInfo"].nil?
         payment
       end
 

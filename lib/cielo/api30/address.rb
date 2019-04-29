@@ -28,7 +28,7 @@ module Cielo
 
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         address = new
         address.street = data["Street"]
         address.number = data["Number"]

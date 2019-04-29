@@ -14,7 +14,7 @@ module Cielo
 
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         browser = new
         browser.cookies_accepted = data["CookiesAccepted"]
         browser.email = data["Email"]

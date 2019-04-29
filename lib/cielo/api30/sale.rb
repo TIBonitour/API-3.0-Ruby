@@ -17,13 +17,17 @@ module Cielo
         hash.to_json(*options)
       end
 
+      def to_parsed_json
+        JSON.generate(as_json.reject! {|k,v| v.nil?})
+      end
+
       def self.from_json(data)
         return if data.nil?
-
+        data = JSON.parse(data)
         sale = new(data["MerchantOrderId"])
-        sale.customer = Customer.from_json(data["Customer"])
-        sale.payment = Payment.from_json(data["Payment"])
-        sale.fraud_analysis = FraudAnalysis.from_json(data["FraudAnalysis"])
+        sale.customer = Customer.from_json(JSON.generate(data["Customer"])) unless data["Customer"].nil?
+        sale.payment = Payment.from_json(JSON.generate(data["Payment"])) unless data["Payment"].nil?
+        sale.fraud_analysis = FraudAnalysis.from_json(JSON.generate(data["FraudAnalysis"])) unless data["FraudAnalysis"].nil?
         sale
       end
 
