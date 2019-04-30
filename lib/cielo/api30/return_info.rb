@@ -1,59 +1,74 @@
-# -*- encoding : utf-8 -*-
 require 'yaml'
 
 module Cielo
   module API30
-  # Dados relacionados ao código LR da autorização
-  #
-  # @attr [String] code Código LR da autorização
-  # @attr [String] message Mensagem para o estabelecimento comercial
-  # @attr [String] description Descrição para o estabelecimento comercial
-  # @attr [String] action Ação que deve ser tomada pelo estabelecimento comercial
-  # @attr [String] client_message Mensagem que pode ser exibida para cliente
-  # @attr [Boolean] retryable Indica se é permitida a retentativa
-  # @attr [Boolean] card_error Indica se o problema está relacionado ao cartão utilizado
-  class ReturnInfo
-    attr_accessor :code, :message, :description, :action, :client_message, :retryable, :card_error
+    # Dados relacionados ao código LR da autorização
+    #
+    # @attr [String] code Código LR da autorização
+    # @attr [String] message Mensagem para o estabelecimento comercial
+    # @attr [String] description Descrição para o estabelecimento comercial
+    # @attr [String] action Ação que deve ser tomada pelo estabelecimento comercial
+    # @attr [String] client_message Mensagem que pode ser exibida para cliente
+    # @attr [Boolean] retryable Indica se é permitida a retentativa
+    # @attr [Boolean] card_error Indica se o problema está relacionado ao cartão utilizado
+    class ReturnInfo
+      attr_accessor :code, :message, :description, :action, :client_message, :retryable, :card_error
 
-    def initialize(code)
-      @code = code
-      attributes_set
+      def initialize(code = nil)
+        @code = code
+        attributes_set
+      end
+
+      def card_error?
+        card_error
+      end
+
+      def retryable?
+        retryable
+      end
+
+      def as_json(_options = {})
+        remove_nulls(
+          Code: @code,
+          Message: @message,
+          Description: @description,
+          Action: @action,
+          ClientMessage: @client_message,
+          Retryable: @retryable,
+          CardError: @card_error
+        )
+      end
+
+      def remove_nulls(hash)
+        hash.reject { |_k, v| v.nil? || v.eql?('null') || v.eql?({}) }
+      end
+
+      private
+
+      def attributes_set
+        attributes = self.class.infos.fetch(code, default_values)
+        attributes.each { |attribute, value| instance_variable_set("@#{attribute}", value) }
+      end
+
+      def default_values
+        {
+          'message' => "Código #{code} não identificado",
+          'description' => "Código #{code} não identificado",
+          'action' => 'Entre em contato com o Suporte Web Cielo eCommerce',
+          'client_message' => 'Erro inesperado',
+          'retryable' => false,
+          'card_error' => false
+        }
+      end
+
+      def self.infos
+        @infos ||= set_infos
+      end
+
+      def self.set_infos
+        file = File.join(Cielo::API30.root_path, 'cielo', 'api30', 'return_infos.yml')
+        @infos = YAML.load_file(file)
+      end
     end
-
-    def card_error?
-      card_error
-    end
-
-    def retryable?
-      retryable
-    end
-
-    private
-
-    def attributes_set
-      attributes = self.class.infos.fetch(code, default_values)
-      attributes.each { |attribute, value| instance_variable_set("@#{attribute}", value) }
-    end
-
-    def default_values
-      {
-        "message"        => "Código #{code} não identificado",
-        "description"    => "Código #{code} não identificado",
-        "action"         => "Entre em contato com o Suporte Web Cielo eCommerce",
-        "client_message" => "Erro inesperado",
-        "retryable"      => false,
-        "card_error"     => false
-      }
-    end
-
-    def self.infos
-      @infos ||= set_infos
-    end
-
-    def self.set_infos
-      file = File.join(Cielo::API30.root_path, "cielo", "api30", "return_infos.yml")
-      @infos = YAML.load_file(file)
-    end
-  end
 end
 end

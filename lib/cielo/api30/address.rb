@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Cielo
   module API30
     # Customer's address.
@@ -22,27 +21,27 @@ module Cielo
 
       def to_json(*options)
         hash = as_json(*options)
-        hash.reject! {|k,v| v.nil?}
         hash.to_json(*options)
       end
 
       def self.from_json(data)
         return if data.nil?
+
         data = JSON.parse(data)
         address = new
-        address.street = data["Street"]
-        address.number = data["Number"]
-        address.complement = data["Complement"]
-        address.zip_code = data["ZipCode"]
-        address.city = data["City"]
-        address.state = data["State"]
-        address.district = data["District"]
-        address.country = data["Country"]
+        address.street = data['Street']
+        address.number = data['Number']
+        address.complement = data['Complement']
+        address.zip_code = data['ZipCode']
+        address.city = data['City']
+        address.state = data['State']
+        address.district = data['District']
+        address.country = data['Country']
         address
       end
 
-      def as_json(options={})
-        {
+      def as_json(_options = {})
+        remove_nulls(
           Street: @street,
           Number: @number,
           Complement: @complement,
@@ -51,7 +50,11 @@ module Cielo
           City: @city,
           State: @state,
           Country: @country
-        }
+        )
+      end
+
+      def remove_nulls(hash)
+        hash.reject { |_k, v| v.nil? || v.eql?('null') }
       end
     end
   end

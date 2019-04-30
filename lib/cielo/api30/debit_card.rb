@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Cielo
   module API30
     # Debit card data
@@ -27,26 +26,26 @@ module Cielo
 
       def to_json(*options)
         hash = as_json(*options)
-        hash.reject! {|k,v| v.nil?}
         hash.to_json(*options)
       end
 
       def self.from_json(data)
         return if data.nil?
+
         data = JSON.parse(data)
         debit_card = new
-        debit_card.card_number = data["CardNumber"]
-        debit_card.holder = data["Holder"]
-        debit_card.expiration_date = data["ExpirationDate"]
-        debit_card.security_code = data["SecurityCode"]
-        debit_card.save_card = data["SaveCard"]
-        debit_card.brand = data["Brand"]
-        debit_card.card_token = data["CardToken"]
+        debit_card.card_number = data['CardNumber']
+        debit_card.holder = data['Holder']
+        debit_card.expiration_date = data['ExpirationDate']
+        debit_card.security_code = data['SecurityCode']
+        debit_card.save_card = data['SaveCard']
+        debit_card.brand = data['Brand']
+        debit_card.card_token = data['CardToken']
         debit_card
       end
 
-      def as_json(options={})
-        {
+      def as_json(_options = {})
+        remove_nulls(
           CardNumber: @card_number,
           Holder: @holder,
           ExpirationDate: @expiration_date,
@@ -54,7 +53,11 @@ module Cielo
           SaveCard: @save_card,
           Brand: @brand,
           CardToken: @card_token
-        }
+        )
+      end
+
+      def remove_nulls(hash)
+        hash.reject { |_k, v| v.nil? || v.eql?('null') || v.eql?({}) }
       end
     end
   end

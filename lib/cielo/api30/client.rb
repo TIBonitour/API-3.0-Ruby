@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Cielo
   module API30
     #  The Cielo API SDK front-end
@@ -40,8 +39,8 @@ module Cielo
       # @param payment_id [String] The payment_id to be queried
       # @param amount [Integer] Order value in cents
       # @return [Payment] The cancelled payment
-      def cancel_payment(payment_id, amount=nil)
-        request = Cielo::API30::Request::UpdateSaleRequest.new("void", merchant, environment)
+      def cancel_payment(payment_id, amount = nil)
+        request = Cielo::API30::Request::UpdateSaleRequest.new('void', merchant, environment)
 
         request.amount = amount
 
@@ -55,8 +54,8 @@ module Cielo
       # @param amount [Integer] Amount of the authorization to be captured
       # @param service_tax_amount [Integer] Amount of the authorization should be destined for the service charge
       # @return [Payment] The captured payment
-      def capture_sale(payment_id, amount=nil, service_tax_amount=nil)
-        request = Cielo::API30::Request::UpdateSaleRequest.new("capture", merchant, environment)
+      def capture_sale(payment_id, amount = nil, service_tax_amount = nil)
+        request = Cielo::API30::Request::UpdateSaleRequest.new('capture', merchant, environment)
 
         request.amount = amount
         request.service_tax_amount = service_tax_amount

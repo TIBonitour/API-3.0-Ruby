@@ -1,4 +1,3 @@
-# -*- encoding : utf-8 -*-
 module Cielo
   module API30
     # Customer data
@@ -19,39 +18,45 @@ module Cielo
                     :address,
                     :delivery_address
 
-      def initialize(name)
+      def initialize(name = nil)
         @name = name
+        @address = Address.new
+        @delivery_address = Address.new
       end
 
       def to_json(*options)
         hash = as_json(*options)
-        hash.reject! {|k,v| v.nil?}
         hash.to_json(*options)
       end
 
       def self.from_json(data)
         return if data.nil?
+
         data = JSON.parse(data)
-        customer = new(data["Name"])
-        customer.email = data["Email"]
-        customer.birth_date = data["BirthDate"]
-        customer.identity = data["Identity"]
-        customer.identity_type = data["IdentityType"]
-        customer.address = Address.from_json(JSON.generate(data["Address"])) unless data["Address"].nil?
-        customer.delivery_address = Address.from_json(JSON.generate(data["DeliveryAddress"])) unless data["DeliveryAddress"].nil?
+        customer = new(data['Name'])
+        customer.email = data['Email']
+        customer.birth_date = data['BirthDate']
+        customer.identity = data['Identity']
+        customer.identity_type = data['IdentityType']
+        customer.address = data['Address'].nil? ? Address.new : Address.from_json(JSON.generate(data['Address']))
+        customer.delivery_address = data['DeliveryAddress'].nil? ? Address.new : Address.from_json(JSON.generate(data['DeliveryAddress']))
         customer
       end
 
-      def as_json(options={})
-        {
+      def as_json(_options = {})
+        remove_nulls(
           Name: @name,
           Email: @email,
           BirthDate: @birth_date,
           Identity: @identity,
           IdentityType: @identity_type,
-          Address: @address,
-          DeliveryAddress: @delivery_address
-        }
+          Address: @address.as_json,
+          DeliveryAddress: @delivery_address.as_json
+        )
+      end
+
+      def remove_nulls(hash)
+        hash.reject { |_k, v| v.nil? || v.eql?('null') || v.eql?({}) }
       end
     end
   end

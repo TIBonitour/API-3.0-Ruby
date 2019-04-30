@@ -1,5 +1,4 @@
-# -*- encoding : utf-8 -*-
-require "cielo/api30/request/cielo_request"
+require 'cielo/api30/request/cielo_request'
 
 module Cielo
   module API30
@@ -19,15 +18,15 @@ module Cielo
         end
 
         def execute(payment_id)
-          uri = URI.parse([@environment.api, "1", "sales", payment_id, type].join("/"))
+          uri = URI.parse([@environment.api, '1', 'sales', payment_id, type].join('/'))
           params = {}
 
-          params["amount"] = amount if amount
-          params["serviceTaxAmount"] = service_tax_amount if service_tax_amount
+          params['amount'] = amount if amount
+          params['serviceTaxAmount'] = service_tax_amount if service_tax_amount
 
           uri.query = URI.encode_www_form(params)
 
-          Cielo::API30::Payment.from_json(send_request("PUT", uri))
+          Cielo::API30::Payment.from_json(send_request('PUT', uri))
         end
       end
     end
