@@ -1,4 +1,4 @@
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'cielo/api30/version'
 
@@ -7,36 +7,36 @@ Gem::Specification.new do |spec|
   spec.version       = Cielo::API30::VERSION
   spec.authors       = ['Cielo']
   spec.email         = ['desenvolvedores@cielo.com.br']
-  spec.description   = "Integração com a API 3.0 da Cielo"
-  spec.summary       = "SDK API 3.0 da Cielo"
+  spec.description   = 'Integração com a API 3.0 da Cielo'
+  spec.summary       = 'SDK API 3.0 da Cielo'
   spec.homepage      = 'https://github.com/developercielo/API-3.0-Ruby'
   spec.license       = 'MIT'
   spec.has_rdoc      = 'yard'
 
   spec.require_paths = ['lib']
-  spec.files = ["lib/cielo/api30.rb",
-                "lib/cielo/environment.rb",
-                "lib/cielo/merchant.rb",
-                "lib/cielo/api30/address.rb",
-                "lib/cielo/api30/credit_card.rb",
-                "lib/cielo/api30/debit_card.rb",
-                "lib/cielo/api30/customer.rb",
-                "lib/cielo/api30/payment.rb",
-                "lib/cielo/api30/recurrent_payment.rb",
-                "lib/cielo/api30/sale.rb",
-                "lib/cielo/api30/version.rb",
-                "lib/cielo/api30/request/cielo_request.rb",
-                "lib/cielo/api30/request/cielo_error.rb",
-                "lib/cielo/api30/request/create_sale_request.rb",
-                "lib/cielo/api30/request/query_sale_request.rb",
-                "lib/cielo/api30/request/update_sale_request.rb"]
+  spec.files = ['lib/cielo/api30.rb',
+                'lib/cielo/environment.rb',
+                'lib/cielo/merchant.rb',
+                'lib/cielo/api30/address.rb',
+                'lib/cielo/api30/credit_card.rb',
+                'lib/cielo/api30/debit_card.rb',
+                'lib/cielo/api30/customer.rb',
+                'lib/cielo/api30/payment.rb',
+                'lib/cielo/api30/recurrent_payment.rb',
+                'lib/cielo/api30/sale.rb',
+                'lib/cielo/api30/version.rb',
+                'lib/cielo/api30/request/cielo_request.rb',
+                'lib/cielo/api30/request/cielo_error.rb',
+                'lib/cielo/api30/request/create_sale_request.rb',
+                'lib/cielo/api30/request/query_sale_request.rb',
+                'lib/cielo/api30/request/update_sale_request.rb']
 
-  spec.add_dependency "bundler", "~> 1.6"
-  spec.add_dependency "uuidtools", "~> 2.1.5"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "yard", "~> 0.8"
-  spec.add_development_dependency "rspec", "~> 3.4"
-  spec.add_development_dependency "byebug", "~> 10.0.2"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "simplecov-console"
+  spec.add_dependency 'bundler', '~> 1.6'
+  spec.add_dependency 'uuidtools', '~> 2.1.5'
+  spec.add_development_dependency 'byebug', '~> 10.0.2'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec', '~> 3.4'
+  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'simplecov-console'
+  spec.add_development_dependency 'yard', '~> 0.8'
 end
