@@ -1,7 +1,6 @@
-# -*- encoding : utf-8 -*-
 module Cielo
   module API30
     # Versão da gem
-    VERSION = "1.0.0"
+    VERSION = '1.0.0'.freeze
   end
 end
