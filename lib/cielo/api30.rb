@@ -10,6 +10,7 @@ require 'cielo/api30/payment'
 require 'cielo/api30/browser'
 require 'cielo/api30/fraud_analysis'
 require 'cielo/api30/recurrent_payment'
+require 'cielo/api30/response'
 require 'cielo/api30/sale'
 
 require 'cielo/api30/request/create_sale_request'

@@ -40,7 +40,7 @@ module Cielo
 
           raise CieloError.new(data.first['Code'], data.first['Message']) if response.code.to_i >= 400
 
-          response.body
+          JSON.parse(response.body).merge!(Response: { Code: response.code.to_i }).to_json
         end
       end
     end
