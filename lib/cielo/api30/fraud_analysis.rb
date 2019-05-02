@@ -8,7 +8,9 @@ module Cielo
                     :void_on_high_risk,
                     :total_order_amount,
                     :finger_print_id,
-                    :browser
+                    :browser,
+                    :fraud_analysis_reason_code,
+                    :status_description
 
       def initialize
         @browser = Browser.new
@@ -32,6 +34,8 @@ module Cielo
         fraud_analysis.total_order_amount = data['TotalOrderAmount']
         fraud_analysis.finger_print_id = data['FingerPrintId']
         fraud_analysis.browser = data['Browser'].nil? ? Browser.new : Browser.from_json(JSON.generate(data['Browser']))
+        fraud_analysis.fraud_analysis_reason_code = data["FraudAnalysisReasonCode"]
+        fraud_analysis.status_description = data["StatusDescription"]
         fraud_analysis
       end
 
@@ -44,7 +48,9 @@ module Cielo
           VoidOnHighRisk: @void_on_high_risk,
           TotalOrderAmount: @total_order_amount,
           FingerPrintId: @finger_print_id,
-          Browser: @browser.as_json
+          Browser: @browser.as_json,
+          FraudAnalysisReasonCode: @fraud_analysis_reason_code,
+          StatusDescription: @status_description
         )
       end
 
