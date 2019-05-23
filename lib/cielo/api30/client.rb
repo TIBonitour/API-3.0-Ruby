@@ -4,10 +4,8 @@ module Cielo
   module API30
     #  The Cielo API SDK front-end
     class Client
-      extend Forwardable
-      def_delegators :create_sale_requester, :response_body
 
-      attr_accessor :merchant, :environment, :create_sale_requester
+      attr_accessor :merchant, :environment
       attr_reader :request
       private :merchant, :environment
 
@@ -29,8 +27,8 @@ module Cielo
       # @param sale [Sale] The preconfigured Sale
       # @return [Sale] The Sale with authorization, tid, etc. returned by Cielo.
       def create_sale(sale)
-        self.create_sale_requester = Cielo::API30::Request::CreateSaleRequest.new(merchant, environment)
-        create_sale_requester.execute(sale)
+        self.request = Cielo::API30::Request::CreateSaleRequest.new(merchant, environment)
+        request.execute(sale)
       end
 
       # Query a Sale on Cielo by paymentId
@@ -38,7 +36,8 @@ module Cielo
       # @param payment_id [String] The payment_id to be queried
       # @return [Sale] The Sale with authorization, tid, etc. returned by Cielo.
       def get_sale(payment_id)
-        Cielo::API30::Request::QuerySaleRequest.new(merchant, environment).execute(payment_id)
+        self.request = Cielo::API30::Request::QuerySaleRequest.new(merchant, environment)
+        request.execute(payment_id)
       end
 
       # Cancel a Payment on Cielo by paymentId and speficying the amount
@@ -47,7 +46,7 @@ module Cielo
       # @param amount [Integer] Order value in cents
       # @return [Payment] The cancelled payment
       def cancel_payment(payment_id, amount = nil)
-        request = Cielo::API30::Request::UpdateSaleRequest.new('void', merchant, environment)
+        self.request = Cielo::API30::Request::UpdateSaleRequest.new('void', merchant, environment)
 
         request.amount = amount
 
@@ -62,7 +61,7 @@ module Cielo
       # @param service_tax_amount [Integer] Amount of the authorization should be destined for the service charge
       # @return [Payment] The captured payment
       def capture_sale(payment_id, amount = nil, service_tax_amount = nil)
-        request = Cielo::API30::Request::UpdateSaleRequest.new('capture', merchant, environment)
+        self.request = Cielo::API30::Request::UpdateSaleRequest.new('capture', merchant, environment)
 
         request.amount = amount
         request.service_tax_amount = service_tax_amount
