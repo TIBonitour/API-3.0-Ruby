@@ -8,7 +8,7 @@ module Cielo
   module API30
     module Request
       class CieloRequest
-        attr_accessor :merchant
+        attr_accessor :merchant, :response_body
         private :merchant
 
         def initialize(merchant)
@@ -36,9 +36,9 @@ module Cielo
 
           response = client.send_request(method, uri.request_uri, body, headers)
 
-          data = JSON.parse(response.body)
+          self.response_body = JSON.parse(response.body)
 
-          raise CieloError.new(data.first['Code'], data.first['Message']) if response.code.to_i >= 400
+          raise CieloError.new(response_body.first['Code'], response_body.first['Message']) if response.code.to_i >= 400
 
           JSON.parse(response.body).merge!(Response: { Code: response.code.to_i }).to_json
         end

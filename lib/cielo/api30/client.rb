@@ -1,8 +1,13 @@
+require 'forwardable'
+
 module Cielo
   module API30
     #  The Cielo API SDK front-end
     class Client
-      attr_accessor :merchant, :environment
+      extend Forwardable
+      def_delegators :create_sale_requester, :response_body
+
+      attr_accessor :merchant, :environment, :create_sale_requester
       attr_reader :request
       private :merchant, :environment
 
@@ -24,7 +29,8 @@ module Cielo
       # @param sale [Sale] The preconfigured Sale
       # @return [Sale] The Sale with authorization, tid, etc. returned by Cielo.
       def create_sale(sale)
-        self.request = Cielo::API30::Request::CreateSaleRequest.new(merchant, environment).execute(sale)
+        self.create_sale_requester = Cielo::API30::Request::CreateSaleRequest.new(merchant, environment)
+        create_sale_requester.execute(sale)
       end
 
       # Query a Sale on Cielo by paymentId
