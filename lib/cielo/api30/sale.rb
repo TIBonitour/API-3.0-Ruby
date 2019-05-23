@@ -42,6 +42,14 @@ module Cielo
         )
       end
 
+      def safe_json
+        remove_nulls(
+          MerchantOrderId: @merchant_order_id,
+          Customer: @customer.as_json,
+          Payment: @payment.safe_json,
+        )
+      end
+
       def remove_nulls(hash)
         hash.reject { |_k, v| v.nil? || v.eql?('null') || v.eql?({}) }
       end

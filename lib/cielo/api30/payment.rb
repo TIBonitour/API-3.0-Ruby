@@ -141,6 +141,10 @@ module Cielo
         )
       end
 
+      def safe_json
+        as_json.merge(CreditCard: @credit_card.safe_json, DebitCard: @debit_card.safe_json)
+      end
+
       def remove_nulls(hash)
         hash.reject { |_k, v| v.nil? || v.eql?('null') || v.eql?({}) }
       end
