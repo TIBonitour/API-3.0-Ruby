@@ -3,6 +3,7 @@ module Cielo
     #  The Cielo API SDK front-end
     class Client
       attr_accessor :merchant, :environment
+      attr_reader :request
       private :merchant, :environment
 
       # Create an instance of API client by choosing the environment where the
@@ -23,7 +24,7 @@ module Cielo
       # @param sale [Sale] The preconfigured Sale
       # @return [Sale] The Sale with authorization, tid, etc. returned by Cielo.
       def create_sale(sale)
-        Cielo::API30::Request::CreateSaleRequest.new(merchant, environment).execute(sale)
+        self.request = Cielo::API30::Request::CreateSaleRequest.new(merchant, environment).execute(sale)
       end
 
       # Query a Sale on Cielo by paymentId
@@ -62,6 +63,10 @@ module Cielo
 
         request.execute(payment_id)
       end
+      
+      private
+      
+      attr_writer :request
     end
   end
 end
