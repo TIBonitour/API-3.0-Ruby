@@ -57,7 +57,7 @@ module Cielo
       end
 
       def safe_json
-        as_json.except(:CardToken, :SecurityCode).merge(CardNumber: @card_number.gsub(/.(?=....)/, '*'))
+        as_json.except(:CardToken, :SecurityCode).merge(CardNumber: @card_number && @card_number.gsub(/.(?=....)/, '*'))
       end
 
       def remove_nulls(hash)
