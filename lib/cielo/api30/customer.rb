@@ -16,7 +16,8 @@ module Cielo
                     :identity,
                     :identity_type,
                     :address,
-                    :delivery_address
+                    :delivery_address,
+                    :phone
 
       def initialize(name = nil)
         @name = name
@@ -40,6 +41,7 @@ module Cielo
         customer.identity_type = data['IdentityType']
         customer.address = data['Address'].nil? ? Address.new : Address.from_json(JSON.generate(data['Address']))
         customer.delivery_address = data['DeliveryAddress'].nil? ? Address.new : Address.from_json(JSON.generate(data['DeliveryAddress']))
+        customer.phone = data['Phone']
         customer
       end
 
@@ -51,7 +53,8 @@ module Cielo
           Identity: @identity,
           IdentityType: @identity_type,
           Address: @address.as_json,
-          DeliveryAddress: @delivery_address.as_json
+          DeliveryAddress: @delivery_address.as_json,
+          Phone: @phone
         )
       end
 
