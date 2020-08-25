@@ -12,7 +12,7 @@ module Cielo
     class Customer
       attr_accessor :name,
                     :email,
-                    :birth_date,
+                    :birthdate,
                     :identity,
                     :identity_type,
                     :address,
@@ -36,7 +36,7 @@ module Cielo
         data = JSON.parse(data)
         customer = new(data['Name'])
         customer.email = data['Email']
-        customer.birth_date = data['Birthdate']
+        customer.birthdate = data['Birthdate']
         customer.identity = data['Identity']
         customer.identity_type = data['IdentityType']
         customer.address = data['Address'].nil? ? Address.new : Address.from_json(JSON.generate(data['Address']))
@@ -49,7 +49,7 @@ module Cielo
         remove_nulls(
           Name: @name,
           Email: @email,
-          Birthdate: @birth_date,
+          Birthdate: @birthdate,
           Identity: @identity,
           IdentityType: @identity_type,
           Address: @address.as_json,
