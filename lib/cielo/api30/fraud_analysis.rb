@@ -10,7 +10,8 @@ module Cielo
                     :finger_print_id,
                     :browser,
                     :fraud_analysis_reason_code,
-                    :status_description
+                    :status_description,
+                    :merchant_defined_fields
 
       def initialize
         @browser = Browser.new
@@ -34,6 +35,7 @@ module Cielo
         fraud_analysis.total_order_amount = data['TotalOrderAmount']
         fraud_analysis.finger_print_id = data['FingerPrintId']
         fraud_analysis.browser = data['Browser'].nil? ? Browser.new : Browser.from_json(JSON.generate(data['Browser']))
+        fraud_analysis.merchant_defined_fields = data['MerchantDefinedFields'].nil? ? [] : data['MerchantDefinedFields']
         fraud_analysis.fraud_analysis_reason_code = data["FraudAnalysisReasonCode"]
         fraud_analysis.status_description = data["StatusDescription"]
         fraud_analysis
@@ -50,12 +52,13 @@ module Cielo
           FingerPrintId: @finger_print_id,
           Browser: @browser.as_json,
           FraudAnalysisReasonCode: @fraud_analysis_reason_code,
-          StatusDescription: @status_description
+          StatusDescription: @status_description,
+          MerchantDefinedFields: @merchant_defined_fields
         )
       end
 
       def remove_nulls(hash)
-        hash.reject { |_k, v| v.nil? || v.eql?('null') || v.eql?({}) }
+        hash.reject { |_k, v| v.nil? || v.eql?('null') || v.eql?({}) || v.eql?([]) }
       end
     end
   end
